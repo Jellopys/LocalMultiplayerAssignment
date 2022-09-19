@@ -6,15 +6,18 @@ using UnityEngine.InputSystem;
 public class PlayerControllerCustom : MonoBehaviour
 {
     private PlayerTurn _playerTurn;
+
+    [Header("InputActions")]
     private PlayerInputActions _inputsActions;
     private InputAction _moveAction;
     private InputAction _jumpAction;
+    private InputAction _fireAction;
     
 
     [Header("Player Step Climb")]
     [SerializeField] private GameObject _stepRayUpper;
     [SerializeField] private GameObject _stepRayLower;
-    [SerializeField] float _stepHeight = 0.3f;
+    [SerializeField] float _stepHeight = 0.2f;
     [SerializeField] float _stepSmooth = 0.1f;
 
     [Header("Camera")]
@@ -25,10 +28,8 @@ public class PlayerControllerCustom : MonoBehaviour
     [SerializeField] private float _speed = 5f;
     [SerializeField] private Transform _feetPos;
     [SerializeField] private float _checkGroundedDistance;
-    [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jumpForce;
-    private float _inputX;
-    private float _inputY;
+    [SerializeField] private LayerMask _groundLayer;
     private float _turnSmoothVelocity;
     private Rigidbody _rigidbody;
     private Vector2 _moveValue;
@@ -38,30 +39,34 @@ public class PlayerControllerCustom : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _playerTurn = GetComponent<PlayerTurn>();
         _inputsActions = new PlayerInputActions();
-        
     }
 
-    private void OnEnable()
+    private void OnEnable() // Initializes all input actions
     {
         _moveAction = _inputsActions.Player.Move;
         _moveAction.Enable();
         _jumpAction = _inputsActions.Player.Jump;
         _jumpAction.Enable();
         _jumpAction.performed += Jump;
+        _fireAction = _inputsActions.Player.Fire;
+        _fireAction.Enable();
+        _fireAction.performed += Fire;
     }
 
     private void OnDisable()
     {
         _moveAction.Disable();
         _jumpAction.Disable();
+        _fireAction.Disable();
     }
 
     void Update()
     {
-        MoveCharacter();
+        
 
         if (_playerTurn.IsPlayerTurn())
         {
+            MoveCharacter();
             _moveValue = _moveAction.ReadValue<Vector2>();
         }
     }
@@ -74,15 +79,13 @@ public class PlayerControllerCustom : MonoBehaviour
         cameraRight.y = 0;
         cameraForward = cameraForward.normalized;
         cameraRight = cameraRight.normalized;
-        _inputX = _moveValue.x;
-        _inputY = _moveValue.y;
 
-        Vector3 right = _inputX * cameraRight;
-        Vector3 forward = _inputY * cameraForward;
+        Vector3 right = _moveValue.x * cameraRight;
+        Vector3 forward = _moveValue.y * cameraForward;
 
         Vector3 cameraRelativeMovement = forward + right;
 
-        Vector3 direction = new Vector3(_inputX, 0f, _inputY).normalized;
+        Vector3 direction = new Vector3(_moveValue.x, 0f, _moveValue.y).normalized;
         transform.Translate(cameraRelativeMovement * _speed * Time.deltaTime, Space.World);        
 
         if (direction.magnitude >= 0.1f)
@@ -95,9 +98,8 @@ public class PlayerControllerCustom : MonoBehaviour
         }
     }
 
-    void StepClimb()
+    void StepClimb() // For climbing small steps and moving up ramps
     {
-        // For climbing small steps and moving up ramps
         float raycastDistance = 0.2f;
         float raycastDistanceUpper = 0.35f;
         RaycastHit hitLower;
@@ -114,23 +116,21 @@ public class PlayerControllerCustom : MonoBehaviour
     }
 
 
-    public bool CheckIfGrounded()
-    {
-        if (Physics.Raycast(_feetPos.transform.position, -Vector3.up, _checkGroundedDistance, _groundLayer)) 
-        {
-            return true;
-        }
-        return false;
-    }
-
-
     public void Jump(InputAction.CallbackContext context)
     {
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
-                if (Physics.Raycast(_feetPos.transform.position, -Vector3.up, _checkGroundedDistance, _groundLayer))
+        if (Physics.Raycast(_feetPos.transform.position, -Vector3.up, _checkGroundedDistance, _groundLayer))
         {
             _rigidbody.velocity = Vector3.up * _jumpForce;
         }
+    }
+
+    public void Fire(InputAction.CallbackContext context)
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+
+        TurnManager.GetInstance().TriggerChangeTurn();
+        // _moveValue = new Vector2 (0, 0);
     }
 }
