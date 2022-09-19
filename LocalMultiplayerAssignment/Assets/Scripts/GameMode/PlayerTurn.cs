@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class PlayerTurn : MonoBehaviour
 {
-    private int playerIndex;
+    private int teamIndex;
+    private int positionIndex;
 
-    public void SetPlayerTurn(int index)
+    public void SetPlayerTurn(int team, int position)
     {
-        playerIndex = index;
+        teamIndex = team;
+        positionIndex = position;
     }
     
     public bool IsPlayerTurn()
     {
-        return TurnManager.GetInstance().IsItPlayerTurn(playerIndex);
+        return TurnManager.GetInstance().IsItPlayerTurn(teamIndex, positionIndex);
     }
 
     public int GetPlayerIndex()
     {
-        return playerIndex;
+        return teamIndex;
     }
 }

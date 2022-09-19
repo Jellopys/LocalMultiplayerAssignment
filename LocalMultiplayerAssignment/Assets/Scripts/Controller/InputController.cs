@@ -1,36 +1,69 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
+
 public class InputController : MonoBehaviour
 {
-    [SerializeField] [Range (0.1f, 1)] private float _movementSpeed;
-    private CharacterController _characterController;
+    // References
+    private PlayerMovement _playerMovement;
+    private PlayerTurn _playerTurn;
+
+    // InputActions
+    private PlayerInputActions _inputsActions;
+    private InputAction _moveAction;
+    private InputAction _jumpAction;
+    private InputAction _fireAction;
     private Vector2 _moveValue;
-    
+
     void Awake()
     {
-        _characterController = GetComponent<CharacterController>();
+        _playerTurn = GetComponent<PlayerTurn>();
+        _playerMovement = GetComponent<PlayerMovement>();
+        _inputsActions = new PlayerInputActions();
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void OnEnable() // Initializes all inputActions
     {
-        Debug.Log("Move");
-        _moveValue = context.ReadValue<Vector2>();
+        _moveAction = _inputsActions.Player.Move;
+        _moveAction.Enable();
+        _jumpAction = _inputsActions.Player.Jump;
+        _jumpAction.Enable();
+        _jumpAction.performed += Jump;
+        _fireAction = _inputsActions.Player.Fire;
+        _fireAction.Enable();
+        _fireAction.performed += Fire;
     }
 
-    public void Shoot(InputAction.CallbackContext context)
+    private void OnDisable() // Disables all inputActions
     {
-        if (!context.performed) // can also use context.started OR context.phase != InputActionPhase.Performed
+        _moveAction.Disable();
+        _jumpAction.Disable();
+        _fireAction.Disable();
+    }
+
+    void Update()
+    {
+        if (_playerTurn.IsPlayerTurn())
         {
-            return;
+            _playerMovement.MoveCharacter(_moveAction.ReadValue<Vector2>());
         }
     }
 
 
-    private void FixedUpdate()
+    public void Jump(InputAction.CallbackContext context)
     {
-        var moveVector = new Vector3(_moveValue.x, 0, _moveValue.y);
-        _characterController.Move(moveVector* _movementSpeed);
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+
+        _playerMovement.Jump();
+    }
+
+    public void Fire(InputAction.CallbackContext context)
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+
+        TurnManager.GetInstance().TriggerChangeTurn();
+        // _camera.depth--;
     }
 }

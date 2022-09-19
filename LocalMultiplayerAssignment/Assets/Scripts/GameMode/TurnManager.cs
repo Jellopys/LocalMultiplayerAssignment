@@ -5,26 +5,27 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     private static TurnManager instance;
-    [SerializeField] private PlayerTurn playerOne;
-    [SerializeField] private PlayerTurn playerTwo;
+    [SerializeField] private List<PlayerTurn> _teamOneCharacters;
+    [SerializeField] private List<PlayerTurn> _charactersInTeam;
     [SerializeField] private float timeBetweenTurns;
-    [SerializeField] private Transform _camera;
-    [SerializeField] private Transform playerOneTransform;
-    [SerializeField] private Transform playerTwoTransform;
+    private Dictionary<int, int> teamStructure = new Dictionary<int, int>();
     
-    private int currentPlayerIndex;
+    private int currentPositionIndex;
+    private int currentTeamIndex;
     private bool waitingForNextTurn;
     private float turnDelay;
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else 
         {
             instance = this;
-            currentPlayerIndex = 1;
-            playerOne.SetPlayerTurn(1);
-            playerTwo.SetPlayerTurn(2);
         }
+        currentTeamIndex = 1;
     }
 
     private void Update()
@@ -44,14 +45,14 @@ public class TurnManager : MonoBehaviour
     public delegate void DelegateChangeTurn();
     public static event DelegateChangeTurn TrigChangeTurn;
 
-    public bool IsItPlayerTurn(int index)
+    public bool IsItPlayerTurn(int teamIndex, int positionIndex)
     {
         if (waitingForNextTurn)
         { 
             return false;
         }
 
-        return index == currentPlayerIndex;
+        return teamIndex == currentTeamIndex && positionIndex == currentPositionIndex;
     }
 
     public static TurnManager GetInstance()
@@ -70,26 +71,35 @@ public class TurnManager : MonoBehaviour
 
     private void ChangeTurn()
     {
-        if (currentPlayerIndex == 1)
+        if (currentTeamIndex == 1)
         {
-            currentPlayerIndex = 2;
+            currentTeamIndex = 2;
         }
-        else if (currentPlayerIndex == 2)
+        else if (currentTeamIndex == 2)
         {
-            currentPlayerIndex = 1;
+            currentTeamIndex = 1;
         }
     }
 
-    public Transform GetCurrentPlayerTransform()
+    public Transform GetNewPlayerTransform()
     {
-        if (currentPlayerIndex == 1)
+        if (currentTeamIndex == 1)
         {
-            return playerOneTransform;
+            return _teamOneCharacters[0].gameObject.transform;
         }
-        else if (currentPlayerIndex == 2)
+        else if (currentTeamIndex == 2)
         {
-            return playerTwoTransform;
+            return _teamOneCharacters[1].gameObject.transform;
         }
-        return playerOneTransform;
+        return _teamOneCharacters[0].gameObject.transform;
+
+        // return _teamOneCharacters[currentTeamIndex].transform;
+    }
+
+    public void SetPlayerTeam(PlayerTurn playerCharacter, int team, int position)
+    {
+        teamStructure.Add(team, position);
+        // _teamOneCharacters.Add(playerCharacter);
+        playerCharacter.SetPlayerTurn(team, position);
     }
 }
