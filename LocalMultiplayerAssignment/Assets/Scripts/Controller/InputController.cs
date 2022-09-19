@@ -15,6 +15,7 @@ public class InputController : MonoBehaviour
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _fireAction;
+    private InputAction _switchAction;
     private Vector2 _moveValue;
 
     void Awake()
@@ -34,6 +35,9 @@ public class InputController : MonoBehaviour
         _fireAction = _inputsActions.Player.Fire;
         _fireAction.Enable();
         _fireAction.performed += Fire;
+        _switchAction = _inputsActions.Player.SwitchCharacter;
+        _switchAction.Enable();
+        _switchAction.performed += SwitchCharacter;
     }
 
     private void OnDisable() // Disables all inputActions
@@ -52,18 +56,24 @@ public class InputController : MonoBehaviour
     }
 
 
-    public void Jump(InputAction.CallbackContext context)
+    public void Jump(InputAction.CallbackContext context) // Space hotkey
     {
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
         _playerMovement.Jump();
     }
 
-    public void Fire(InputAction.CallbackContext context)
+    public void Fire(InputAction.CallbackContext context) // K hotkey
     {
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
         TurnManager.GetInstance().TriggerChangeTurn();
-        // _camera.depth--;
+    }
+
+    public void SwitchCharacter(InputAction.CallbackContext context) // V hotkey
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+
+        TurnManager.GetInstance().TriggerSwitchCharacter();
     }
 }

@@ -5,32 +5,35 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int _numberOfTeams = 2;
-    [SerializeField] private int _teamSize = 3;
+    [SerializeField] private int _teamSize = 2;
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private List<Transform> _spawnPoints;
 
     public float timeRemaining = 2;
     public bool timerIsRunning = false;
+
     private void Start()
     {
         // Starts the timer automatically
         timerIsRunning = true;
+        Initialize();
     }
     void Update()
     {
-        if (timerIsRunning)
-        {
-            if (timeRemaining > 0)
-            {
-                timeRemaining -= Time.deltaTime;
-            }
-            else
-            {
-                Initialize();
-                timeRemaining = 0;
-                timerIsRunning = false;
-            }
-        }
+        // if (timerIsRunning)
+        // {
+        //     if (timeRemaining > 0)
+        //     {
+        //         timeRemaining -= Time.deltaTime;
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("hi");
+        //         Initialize();
+        //         timeRemaining = 0;
+        //         timerIsRunning = false;
+        //     }
+        // }
     }
 
     void Awake()
@@ -55,8 +58,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < _teamSize; i++)
         {
             GameObject character = Instantiate(_characterPrefab, GetRandomAvailableSpawnPoint(), Quaternion.identity);
-            PlayerTurn playerTurn = character.GetComponent<PlayerTurn>();
-            TurnManager.GetInstance().SetPlayerTeam(playerTurn, team, i);
+            PlayerTurn playerTurnRef = character.GetComponent<PlayerTurn>();
+            TurnManager.GetInstance().SetPlayerTeam(playerTurnRef, team, i);
         }
     }
 
@@ -65,7 +68,7 @@ public class GameManager : MonoBehaviour
         Vector3 spawnPoint;
         int listPosition;
 
-        listPosition = (Random.Range(0, _spawnPoints.Count));
+        listPosition = (Random.Range(0, _spawnPoints.Count - 1));
         spawnPoint = _spawnPoints[listPosition].position;
         _spawnPoints.RemoveAt(listPosition);
         return spawnPoint;

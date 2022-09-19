@@ -5,15 +5,17 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     private static TurnManager instance;
-    [SerializeField] private List<PlayerTurn> _teamOneCharacters;
-    [SerializeField] private List<PlayerTurn> _charactersInTeam;
+    [SerializeField] private List<PlayerTurn> _teamCaptains;
+    [SerializeField] private List<int> _team;
+    [SerializeField] private List<PlayerTurn> _positionInTeam;
     [SerializeField] private float timeBetweenTurns;
     private Dictionary<int, int> teamStructure = new Dictionary<int, int>();
     
     private int currentPositionIndex;
     private int currentTeamIndex;
-    private bool waitingForNextTurn;
+    private bool waitingForSwitch;
     private float turnDelay;
+    private int uglySwitchIntCHANGETHIS;
 
     private void Awake()
     {
@@ -25,19 +27,25 @@ public class TurnManager : MonoBehaviour
         {
             instance = this;
         }
-        currentTeamIndex = 1;
+        currentTeamIndex = 0;
+        currentPositionIndex = 0;
     }
 
     private void Update()
     {
-        if (waitingForNextTurn)
+        if (waitingForSwitch)
         {
             turnDelay += Time.deltaTime;
             if (turnDelay >= timeBetweenTurns)
             {
                 turnDelay = 0;
-                waitingForNextTurn = false;
-                ChangeTurn();
+                waitingForSwitch = false;
+                if (uglySwitchIntCHANGETHIS == 0)
+                {
+                    SwitchCharacter();
+                }
+                else 
+                    ChangeTurn();
             }
         }
     }
@@ -47,12 +55,18 @@ public class TurnManager : MonoBehaviour
 
     public bool IsItPlayerTurn(int teamIndex, int positionIndex)
     {
-        if (waitingForNextTurn)
+        if (waitingForSwitch)
         { 
             return false;
         }
-
-        return teamIndex == currentTeamIndex && positionIndex == currentPositionIndex;
+        if (teamIndex == currentTeamIndex && positionIndex == currentPositionIndex)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static TurnManager GetInstance()
@@ -62,7 +76,8 @@ public class TurnManager : MonoBehaviour
 
     public void TriggerChangeTurn()
     {
-        waitingForNextTurn = true;
+        waitingForSwitch = true;
+        uglySwitchIntCHANGETHIS = 1;
 
         if (TrigChangeTurn != null)
             TrigChangeTurn();
@@ -71,35 +86,54 @@ public class TurnManager : MonoBehaviour
 
     private void ChangeTurn()
     {
-        if (currentTeamIndex == 1)
+        Debug.Log("current team index is " + currentTeamIndex + " and teamstructure dictionary count is " + teamStructure.Count);
+        if (currentTeamIndex == teamStructure.Count - 1)
         {
-            currentTeamIndex = 2;
+            currentTeamIndex = 0;
         }
-        else if (currentTeamIndex == 2)
+        else
+            currentTeamIndex++;
+    }
+
+    public void TriggerSwitchCharacter()
+    {
+        waitingForSwitch = true;
+        uglySwitchIntCHANGETHIS = 0;
+    }
+
+    private void SwitchCharacter()
+    {
+        if (currentPositionIndex == teamStructure[currentTeamIndex])
         {
-            currentTeamIndex = 1;
+            currentPositionIndex = 0;
+        }
+        else 
+        {
+            currentPositionIndex++;
         }
     }
 
     public Transform GetNewPlayerTransform()
     {
-        if (currentTeamIndex == 1)
-        {
-            return _teamOneCharacters[0].gameObject.transform;
-        }
-        else if (currentTeamIndex == 2)
-        {
-            return _teamOneCharacters[1].gameObject.transform;
-        }
-        return _teamOneCharacters[0].gameObject.transform;
-
-        // return _teamOneCharacters[currentTeamIndex].transform;
+        return _teamCaptains[currentTeamIndex].gameObject.transform;
     }
 
     public void SetPlayerTeam(PlayerTurn playerCharacter, int team, int position)
     {
-        teamStructure.Add(team, position);
-        // _teamOneCharacters.Add(playerCharacter);
+        if (!teamStructure.ContainsKey(team)) // If the team does not exist, create team
+        {
+            teamStructure.Add(team, position);
+            _teamCaptains.Add(playerCharacter);
+        }
+        else
+        {
+            teamStructure[team] = position; // If the team exists, change that teams' character count
+        }
+
+        if (_team.Contains(team))
+        {
+            _team.Add(team);
+        }
         playerCharacter.SetPlayerTurn(team, position);
     }
 }

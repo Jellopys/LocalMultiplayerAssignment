@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerTurn : MonoBehaviour
 {
-    private int teamIndex;
-    private int positionIndex;
+    [SerializeField] private int teamIndex;
+    [SerializeField] private int positionIndex;
 
     public void SetPlayerTurn(int team, int position)
     {
