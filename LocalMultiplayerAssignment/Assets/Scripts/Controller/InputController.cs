@@ -16,6 +16,7 @@ public class InputController : MonoBehaviour
     private InputAction _jumpAction;
     private InputAction _fireAction;
     private InputAction _switchAction;
+    private InputAction _lookAction;
     private Vector2 _moveValue;
 
     void Awake()
@@ -67,13 +68,12 @@ public class InputController : MonoBehaviour
     {
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
-        TurnManager.GetInstance().TriggerChangeTurn();
     }
 
     public void SwitchCharacter(InputAction.CallbackContext context) // V hotkey
     {
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
-        TurnManager.GetInstance().TriggerSwitchCharacter();
+        TurnManager.GetInstance().TriggerChangeTurn();
     }
 }

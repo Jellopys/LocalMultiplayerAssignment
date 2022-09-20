@@ -71,6 +71,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RMB"",
+                    ""type"": ""Button"",
+                    ""id"": ""9349db69-f144-43c9-bb45-a3fc923c5028"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +322,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""SwitchCharacter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""058d695d-a974-4dea-9678-75bd23206e36"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RMB"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +925,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_SwitchCharacter = m_Player.FindAction("SwitchCharacter", throwIfNotFound: true);
+        m_Player_RMB = m_Player.FindAction("RMB", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -981,6 +1002,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_SwitchCharacter;
+    private readonly InputAction m_Player_RMB;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -990,6 +1012,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @SwitchCharacter => m_Wrapper.m_Player_SwitchCharacter;
+        public InputAction @RMB => m_Wrapper.m_Player_RMB;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1014,6 +1037,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @SwitchCharacter.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacter;
                 @SwitchCharacter.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacter;
                 @SwitchCharacter.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacter;
+                @RMB.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRMB;
+                @RMB.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRMB;
+                @RMB.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRMB;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1033,6 +1059,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @SwitchCharacter.started += instance.OnSwitchCharacter;
                 @SwitchCharacter.performed += instance.OnSwitchCharacter;
                 @SwitchCharacter.canceled += instance.OnSwitchCharacter;
+                @RMB.started += instance.OnRMB;
+                @RMB.performed += instance.OnRMB;
+                @RMB.canceled += instance.OnRMB;
             }
         }
     }
@@ -1194,6 +1223,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSwitchCharacter(InputAction.CallbackContext context);
+        void OnRMB(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

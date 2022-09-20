@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Step Climb")]
     [SerializeField] private GameObject _stepRayUpper;
     [SerializeField] private GameObject _stepRayLower;
-    [SerializeField] float _stepHeight = 0.2f;
     [SerializeField] float _stepSmooth = 0.1f;
 
     [Header("Camera")]

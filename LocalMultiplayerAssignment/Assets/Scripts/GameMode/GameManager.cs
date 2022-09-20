@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int _numberOfTeams = 2;
-    [SerializeField] private int _teamSize = 2;
+    [SerializeField] private int _totalCharacters = 4;
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private List<Transform> _spawnPoints;
 
@@ -14,52 +13,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Starts the timer automatically
-        timerIsRunning = true;
         Initialize();
-    }
-    void Update()
-    {
-        // if (timerIsRunning)
-        // {
-        //     if (timeRemaining > 0)
-        //     {
-        //         timeRemaining -= Time.deltaTime;
-        //     }
-        //     else
-        //     {
-        //         Debug.Log("hi");
-        //         Initialize();
-        //         timeRemaining = 0;
-        //         timerIsRunning = false;
-        //     }
-        // }
-    }
-
-    void Awake()
-    {
-        
-        // for (int i = 0; i < _numberOfTeams; i++)
-        // {
-        //     InstantiateCharacters();
-        // }
     }
 
     public void Initialize()
     {
-        for (int i = 0; i < _numberOfTeams; i++)
-        {
-            InitCharsInTeam(i);
-        }
-    }
-
-    public void InitCharsInTeam(int team)
-    {
-        for (int i = 0; i < _teamSize; i++)
+        for (int i = 0; i < _totalCharacters; i++)
         {
             GameObject character = Instantiate(_characterPrefab, GetRandomAvailableSpawnPoint(), Quaternion.identity);
-            PlayerTurn playerTurnRef = character.GetComponent<PlayerTurn>();
-            TurnManager.GetInstance().SetPlayerTeam(playerTurnRef, team, i);
+            TurnManager.GetInstance().SetPlayerTeam(character);
         }
     }
 

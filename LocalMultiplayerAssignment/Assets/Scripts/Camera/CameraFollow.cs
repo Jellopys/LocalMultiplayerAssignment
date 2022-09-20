@@ -1,34 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
-    private static CameraFollow instance;
     [SerializeField] private float _smoothness = 0.7f;
     [SerializeField] private Transform _targetObject;
-    private Vector3 _initialOffset = new Vector3 (0, 8, -7);
+    private Vector3 _initialOffset = new Vector3 (0, 16, -15);
     private Vector3 _cameraPosition;
-    private TurnManager _turnManager;
+    private PlayerInputActions _inputsActions;
+    private InputAction _lookAction;
+    private InputAction _RMBAction;
+    private bool _freeMovement = false;
 
     void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else 
-        {
-            instance = this;
-        }
-
-        TurnManager.TrigChangeTurn += EndTurn; // subscribe to TrigChangeTurn event and call EndTurn when the event is triggered.
+        TurnManager.ChangeCameraTarget += SwitchTarget; // subscribe to TrigChangeTurn event and call EndTurn when the event is triggered.
+        _inputsActions = new PlayerInputActions();
     }
 
-    void Start()
+    private void OnEnable() // Initializes all inputActions
     {
-        // _initialOffset = transform.position - _targetObject.position;
-        // Debug.Log(_initialOffset);
+        _lookAction = _inputsActions.Player.Look;
+        _lookAction.Enable();
+        _RMBAction = _inputsActions.Player.Fire;
+        _RMBAction.Enable();
+        _RMBAction.performed += RMB;
+    }
+
+    void OnDisable()
+    {
+        TurnManager.ChangeCameraTarget -= SwitchTarget; // unsubscribe
+        _lookAction.Disable();
+        _RMBAction.Disable();
     }
 
     void LateUpdate()
@@ -40,13 +45,15 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
-    void OnDisable()
-    {
-        TurnManager.TrigChangeTurn -= EndTurn; // unsubscribe
-    }
 
-    public void EndTurn()
+    public void SwitchTarget()
     {
         _targetObject = TurnManager.GetInstance().GetNewPlayerTransform();
+    }
+
+    public void RMB(InputAction.CallbackContext context) // RightTrigger hotkey
+    {
+        Debug.Log("RMB action");
+        _freeMovement = true;
     }
 }

@@ -5,17 +5,20 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     private static TurnManager instance;
-    [SerializeField] private List<PlayerTurn> _teamCaptains;
-    [SerializeField] private List<int> _team;
-    [SerializeField] private List<PlayerTurn> _positionInTeam;
+    [SerializeField] private List<GameObject> _livingCharacters;
+    [SerializeField] private GameObject _currentCharacter;
+    [SerializeField] private int _currentCharacterIndex = 0;
     [SerializeField] private float timeBetweenTurns;
-    private Dictionary<int, int> teamStructure = new Dictionary<int, int>();
     
     private int currentPositionIndex;
     private int currentTeamIndex;
     private bool waitingForSwitch;
     private float turnDelay;
-    private int uglySwitchIntCHANGETHIS;
+
+    public static TurnManager GetInstance()
+    {
+        return instance;
+    }
 
     private void Awake()
     {
@@ -27,8 +30,6 @@ public class TurnManager : MonoBehaviour
         {
             instance = this;
         }
-        currentTeamIndex = 0;
-        currentPositionIndex = 0;
     }
 
     private void Update()
@@ -40,100 +41,51 @@ public class TurnManager : MonoBehaviour
             {
                 turnDelay = 0;
                 waitingForSwitch = false;
-                if (uglySwitchIntCHANGETHIS == 0)
-                {
-                    SwitchCharacter();
-                }
-                else 
-                    ChangeTurn();
+                ChangeTurn();
             }
         }
     }
 
     public delegate void DelegateChangeTurn();
-    public static event DelegateChangeTurn TrigChangeTurn;
+    public static event DelegateChangeTurn ChangeCameraTarget;
 
-    public bool IsItPlayerTurn(int teamIndex, int positionIndex)
+    public bool IsItPlayerTurn(GameObject character)
     {
-        if (waitingForSwitch)
-        { 
-            return false;
-        }
-        if (teamIndex == currentTeamIndex && positionIndex == currentPositionIndex)
-        {
-            return true;
-        }
+        if (!waitingForSwitch)
+            return character == _currentCharacter;
         else
-        {
             return false;
-        }
-    }
-
-    public static TurnManager GetInstance()
-    {
-        return instance;
     }
 
     public void TriggerChangeTurn()
     {
         waitingForSwitch = true;
-        uglySwitchIntCHANGETHIS = 1;
-
-        if (TrigChangeTurn != null)
-            TrigChangeTurn();
-
     }
 
     private void ChangeTurn()
     {
-        Debug.Log("current team index is " + currentTeamIndex + " and teamstructure dictionary count is " + teamStructure.Count);
-        if (currentTeamIndex == teamStructure.Count - 1)
-        {
-            currentTeamIndex = 0;
-        }
+        _currentCharacterIndex++;
+
+        if (_currentCharacterIndex > _livingCharacters.Count)
+            _currentCharacterIndex = 0;
         else
-            currentTeamIndex++;
-    }
+            _currentCharacter = _livingCharacters[_currentCharacterIndex];
 
-    public void TriggerSwitchCharacter()
-    {
-        waitingForSwitch = true;
-        uglySwitchIntCHANGETHIS = 0;
-    }
-
-    private void SwitchCharacter()
-    {
-        if (currentPositionIndex == teamStructure[currentTeamIndex])
-        {
-            currentPositionIndex = 0;
-        }
-        else 
-        {
-            currentPositionIndex++;
-        }
+        if (ChangeCameraTarget != null)
+            ChangeCameraTarget();
     }
 
     public Transform GetNewPlayerTransform()
     {
-        return _teamCaptains[currentTeamIndex].gameObject.transform;
+        return _currentCharacter.transform;
     }
 
-    public void SetPlayerTeam(PlayerTurn playerCharacter, int team, int position)
+    public void SetPlayerTeam(GameObject character)
     {
-        if (!teamStructure.ContainsKey(team)) // If the team does not exist, create team
-        {
-            teamStructure.Add(team, position);
-            _teamCaptains.Add(playerCharacter);
-        }
-        else
-        {
-            teamStructure[team] = position; // If the team exists, change that teams' character count
-        }
+        _livingCharacters.Add(character);
+        _currentCharacter = _livingCharacters[0];
 
-        if (_team.Contains(team))
-        {
-            _team.Add(team);
-        }
-        playerCharacter.SetPlayerTurn(team, position);
+        if (ChangeCameraTarget != null)
+            ChangeCameraTarget();
     }
 }
