@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private float _smoothness = 0.7f;
+    private CinemachineFreeLook _cinemachine;
+
     [SerializeField] private Transform _targetObject;
-    private Vector3 _initialOffset = new Vector3 (0, 16, -15);
-    private Vector3 _cameraPosition;
     private PlayerInputActions _inputsActions;
     private InputAction _lookAction;
     private InputAction _RMBAction;
@@ -18,6 +18,7 @@ public class CameraFollow : MonoBehaviour
     {
         TurnManager.ChangeCameraTarget += SwitchTarget; // subscribe to TrigChangeTurn event and call EndTurn when the event is triggered.
         _inputsActions = new PlayerInputActions();
+        _cinemachine = GetComponent<CinemachineFreeLook>();
     }
 
     private void OnEnable() // Initializes all inputActions
@@ -36,19 +37,11 @@ public class CameraFollow : MonoBehaviour
         _RMBAction.Disable();
     }
 
-    void LateUpdate()
-    {
-        if (_targetObject != null)
-        {
-            _cameraPosition = _targetObject.position + _initialOffset;
-            transform.position = Vector3.Lerp(transform.position, _cameraPosition, _smoothness * Time.fixedDeltaTime);
-        }
-    }
-
-
     public void SwitchTarget()
     {
         _targetObject = TurnManager.GetInstance().GetNewPlayerTransform();
+        _cinemachine.m_LookAt = _targetObject;
+        _cinemachine.m_Follow = _targetObject;
     }
 
     public void RMB(InputAction.CallbackContext context) // RightTrigger hotkey

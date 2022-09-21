@@ -66,8 +66,11 @@ public class TurnManager : MonoBehaviour
     {
         _currentCharacterIndex++;
 
-        if (_currentCharacterIndex > _livingCharacters.Count)
+        if (_currentCharacterIndex == _livingCharacters.Count)
+        {
+            _currentCharacter = _livingCharacters[0];
             _currentCharacterIndex = 0;
+        }
         else
             _currentCharacter = _livingCharacters[_currentCharacterIndex];
 
