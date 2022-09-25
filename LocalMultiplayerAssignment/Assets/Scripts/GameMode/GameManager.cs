@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         {
             GameObject character = Instantiate(_characterPrefab, GetRandomAvailableSpawnPoint(), Quaternion.identity);
             TurnManager.GetInstance().SetPlayerTeam(character);
+            character.GetComponent<PlayerHealth>().InitializeUI(i + 1);
         }
     }
 

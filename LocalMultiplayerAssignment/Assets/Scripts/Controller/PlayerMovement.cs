@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private float _turnSmoothTime = 0.1f;
     private Transform _camera;
+    [SerializeField] public GameObject _aimCamPosition;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
@@ -82,6 +83,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Fire()
     {
-        Debug.Log("Firing");
+        // DO I EVEN NEED THIS?
     }
 }

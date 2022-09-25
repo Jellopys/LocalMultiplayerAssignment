@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public class CameraFollow : MonoBehaviour
+public class AimCameraFollow : MonoBehaviour
 {
     private CinemachineFreeLook _cinemachine;
-
 
     private GameObject _targetObject;
     private PlayerInputActions _inputsActions;
@@ -19,7 +18,6 @@ public class CameraFollow : MonoBehaviour
     {
         TurnManager.ChangeCameraTarget += SwitchTarget; // subscribe to TrigChangeTurn event and call EndTurn when the event is triggered.
         _inputsActions = new PlayerInputActions();
-        _cinemachine = GetComponent<CinemachineFreeLook>();
     }
 
     void Update()

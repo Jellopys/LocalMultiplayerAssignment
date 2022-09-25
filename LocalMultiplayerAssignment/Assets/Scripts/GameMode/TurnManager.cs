@@ -15,7 +15,10 @@ public class TurnManager : MonoBehaviour
     private bool waitingForSwitch;
     private float turnDelay;
 
+    public delegate void DelegateChangeTurn();
+    public static event DelegateChangeTurn ChangeCameraTarget;
     public static TurnManager GetInstance()
+
     {
         return instance;
     }
@@ -46,8 +49,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public delegate void DelegateChangeTurn();
-    public static event DelegateChangeTurn ChangeCameraTarget;
 
     public bool IsItPlayerTurn(GameObject character)
     {
@@ -78,9 +79,9 @@ public class TurnManager : MonoBehaviour
             ChangeCameraTarget();
     }
 
-    public Transform GetNewPlayerTransform()
+    public GameObject GetPlayerObject()
     {
-        return _currentCharacter.transform;
+        return _currentCharacter;
     }
 
     public void SetPlayerTeam(GameObject character)
