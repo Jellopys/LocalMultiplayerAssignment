@@ -62,10 +62,10 @@ public class PlayerMovement : MonoBehaviour
         float raycastDistanceUpper = 0.35f;
         RaycastHit hitLower;
 
-        if (Physics.Raycast(_stepRayLower.transform.position, transform.TransformDirection(Vector3.forward), out hitLower, raycastDistance))
+        if (Physics.Raycast(_stepRayLower.transform.position, transform.TransformDirection(Vector3.forward), out hitLower, raycastDistance)) // if there's a wall in front of your feet
         {
             RaycastHit hitUpper;
-            if (!Physics.Raycast(_stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, raycastDistanceUpper))
+            if (!Physics.Raycast(_stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, raycastDistanceUpper)) // if the wall is lower than waist height
             {
                 Debug.DrawRay(_stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), Color.red, 100f);
                 transform.Translate(0f, _stepSmooth, 0f);

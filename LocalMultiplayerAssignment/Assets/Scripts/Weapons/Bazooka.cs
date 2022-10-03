@@ -5,22 +5,21 @@ using UnityEngine;
 public class Bazooka : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject _projectile;
+    [SerializeField] private Transform _spawnPoint;
     private GameObject _instigator;
     private bool currentlyHolding = false;
-    private Transform spawnPoint;
     private Vector3 _trajectory;
     private float bazookaPower;
+    private float bazookaMaxPower = 800f;
     private bool isChargingBazooka;
     private bool reverse;
+    private int damage = 20;
 
-    public void Shoot(Transform projectileSpawnPoint, bool isHolding)
+    public void Shoot(bool isHolding)
     {
-        // TODO 
-        // Refactor how I get projectileSpawnPoint
 
-        spawnPoint = projectileSpawnPoint;
         UIManager.GetInstance().SetIsHolding(isHolding);
-        _trajectory = projectileSpawnPoint.transform.forward * bazookaPower + projectileSpawnPoint.transform.up * 300;
+        _trajectory = _spawnPoint.transform.forward * bazookaPower + _spawnPoint.transform.up * 300;
         currentlyHolding = isHolding;
 
         
@@ -31,8 +30,8 @@ public class Bazooka : MonoBehaviour, IWeapon
         }
         else if (!isHolding)
         {
-            GameObject projectile = Instantiate(_projectile, spawnPoint.transform.position, spawnPoint.transform.rotation);
-            projectile.GetComponent<Bullet>().SetProjectilePower(_trajectory);
+            GameObject projectile = Instantiate(_projectile, _spawnPoint.transform.position, _spawnPoint.transform.rotation);
+            projectile.GetComponent<Bullet>().SetProjectilePower(_trajectory, damage);
         }
     }
 
@@ -41,17 +40,17 @@ public class Bazooka : MonoBehaviour, IWeapon
         if (isChargingBazooka)
         {
             
-            if (reverse == false && bazookaPower <= 700)
+            if (reverse == false && bazookaPower <= bazookaMaxPower)
             {
-                bazookaPower = bazookaPower + 700f * Time.deltaTime;
+                bazookaPower = bazookaPower + bazookaMaxPower * Time.deltaTime;
 
-                if (bazookaPower >= 700)
+                if (bazookaPower >= bazookaMaxPower)
                     reverse = true;
 
             }
             else if (reverse == true && bazookaPower >= 0)
             {
-                bazookaPower = bazookaPower - 700f * Time.deltaTime;
+                bazookaPower = bazookaPower - bazookaMaxPower * Time.deltaTime;
 
                 if (bazookaPower <= 0)
                     reverse = false;

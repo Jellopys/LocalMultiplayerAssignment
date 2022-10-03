@@ -17,8 +17,9 @@ public class TurnManager : MonoBehaviour
 
     public delegate void DelegateChangeTurn();
     public static event DelegateChangeTurn ChangeCameraTarget;
-    public static TurnManager GetInstance()
 
+    
+    public static TurnManager GetInstance()
     {
         return instance;
     }
@@ -52,6 +53,8 @@ public class TurnManager : MonoBehaviour
 
     public bool IsItPlayerTurn(GameObject character)
     {
+        if (character == null) { return false; }
+
         if (!waitingForSwitch)
             return character == _currentCharacter;
         else
@@ -67,13 +70,15 @@ public class TurnManager : MonoBehaviour
     {
         _currentCharacterIndex++;
 
-        if (_currentCharacterIndex == _livingCharacters.Count)
+        if (_currentCharacterIndex >= _livingCharacters.Count)
         {
             _currentCharacter = _livingCharacters[0];
             _currentCharacterIndex = 0;
         }
         else
+        {
             _currentCharacter = _livingCharacters[_currentCharacterIndex];
+        }
 
         if (ChangeCameraTarget != null)
             ChangeCameraTarget();
@@ -91,5 +96,22 @@ public class TurnManager : MonoBehaviour
 
         if (ChangeCameraTarget != null)
             ChangeCameraTarget();
+    }
+
+    public void CharacterDied(GameObject character)
+    {
+        if (character == _currentCharacter)
+        {
+            ChangeTurn();
+        }
+
+        _livingCharacters.Remove(character);
+        Destroy(character);
+
+        if (_livingCharacters.Count <= 1)
+        {
+            Debug.Log("VICTORY");
+            // TODO: PROPER VICTORY UI
+        }
     }
 }

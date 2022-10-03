@@ -5,17 +5,15 @@ using UnityEngine;
 public class Gun : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject _bullet;
+    [SerializeField] private Transform _spawnPoint;
     private bool currentlyHolding = false;
-    private Transform spawnPoint;
     private Vector3 power;
+    private int damage = 2;
 
-    public void Shoot(Transform projectileSpawnPoint, bool isHolding)
+    public void Shoot(bool isHolding)
     {
-        // TODO 
-        // Refactor how I get projectileSpawnPoint
+        // power = _spawnPoint.transform.forward * 700f;
 
-        spawnPoint = projectileSpawnPoint;
-        power = projectileSpawnPoint.transform.forward * 700f + projectileSpawnPoint.transform.up * 300f;
         currentlyHolding = isHolding;
 
         if (isHolding)
@@ -29,8 +27,9 @@ public class Gun : MonoBehaviour, IWeapon
     {
         while (currentlyHolding)
         {
-            GameObject projectile = Instantiate(_bullet, spawnPoint.transform.position, Quaternion.identity);
-            projectile.GetComponent<Bullet>().SetProjectilePower(power);
+            power = _spawnPoint.transform.forward * 700f;
+            GameObject projectile = Instantiate(_bullet, _spawnPoint.transform.position, Quaternion.identity);
+            projectile.GetComponent<Bullet>().SetProjectilePower(power, damage);
 
             yield return new WaitForSeconds(0.1f);
         }

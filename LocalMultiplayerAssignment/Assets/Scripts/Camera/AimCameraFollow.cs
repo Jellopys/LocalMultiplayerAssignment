@@ -45,14 +45,14 @@ public class AimCameraFollow : MonoBehaviour
     public void SwitchTarget()
     {
         _targetObject = TurnManager.GetInstance().GetPlayerObject();
-        _cinemachine.m_LookAt = _targetObject.transform;
-        _cinemachine.m_Follow = _targetObject.transform;
+        // _cinemachine.m_LookAt = _targetObject.transform;
+        // _cinemachine.m_Follow = _targetObject.transform;
     }
 
     public void RMB(InputAction.CallbackContext context) // RightTrigger hotkey
     {
-        _cinemachine.m_LookAt = _targetObject.GetComponent<PlayerMovement>()._aimCamPosition.transform;
-        _cinemachine.m_Follow = _targetObject.GetComponent<PlayerMovement>()._aimCamPosition.transform;
+        // _cinemachine.m_LookAt = _targetObject.GetComponent<PlayerMovement>()._aimCamPosition.transform;
+        // _cinemachine.m_Follow = _targetObject.GetComponent<PlayerMovement>()._aimCamPosition.transform;
         
     }
 }

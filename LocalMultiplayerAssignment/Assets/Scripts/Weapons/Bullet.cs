@@ -6,11 +6,18 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
     private GameObject _instigator;
-    private int _damage = 20;
+    private float _damage = 0f;
+    private float _lifetime = 3f;
 
-    public void SetProjectilePower(Vector3 power)
+    public void SetProjectilePower(Vector3 power, int damage)
     {
+        _damage = damage;
         _rigidbody.AddForce(power);
+    }
+
+    void Awake()
+    {
+        Destroy(gameObject, _lifetime);
     }
 
     void Update()
@@ -20,12 +27,14 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+        
         if (other.gameObject.GetComponentInParent<PlayerHealth>())
         {  
             other.gameObject.GetComponentInParent<PlayerHealth>().TakeDamage(_damage);
             // TODO: EXPLOSION HERE
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
+        else
+            Destroy(gameObject);
     }
 }

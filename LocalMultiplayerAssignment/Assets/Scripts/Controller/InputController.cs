@@ -23,6 +23,8 @@ public class InputController : MonoBehaviour
     private InputAction _lookAction;
     private InputAction _Weapon1Action;
     private InputAction _Weapon2Action;
+    private InputAction _Weapon3Action;
+    private InputAction _RMBAction;
     private Vector2 _moveValue;
 
     void Awake()
@@ -58,6 +60,15 @@ public class InputController : MonoBehaviour
         _Weapon2Action = _inputsActions.Player.Weapon2;
         _Weapon2Action.Enable();
         _Weapon2Action.performed += SwitchToWeapon2;
+
+        _Weapon3Action = _inputsActions.Player.Weapon3;
+        _Weapon3Action.Enable();
+        _Weapon3Action.performed += SwitchToWeapon3;
+
+        _RMBAction = _inputsActions.Player.RMB;
+        _RMBAction.Enable();
+        _RMBAction.performed += AimWeapon;
+        _RMBAction.canceled += AimWeapon;
     }
 
     private void OnDisable() // Disables all inputActions
@@ -67,6 +78,8 @@ public class InputController : MonoBehaviour
         _fireAction.Disable();
         _Weapon1Action.Disable();
         _Weapon2Action.Disable();
+        _Weapon3Action.Disable();
+        _RMBAction.Disable();
     }
 
     void Update()
@@ -90,11 +103,11 @@ public class InputController : MonoBehaviour
 
         if (context.started)
         {
-            _weaponManager.Shoot(_projectileSpawnPoint, true);
+            _weaponManager.Shoot(true);
         }
         else if (context.canceled)
         {
-            _weaponManager.Shoot(_projectileSpawnPoint, false);
+            _weaponManager.Shoot(false);
         }
     }
 
@@ -117,5 +130,23 @@ public class InputController : MonoBehaviour
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
         _weaponManager.SwitchWeapon(1);
+    }
+
+    public void SwitchToWeapon3(InputAction.CallbackContext context) // 3 Keyboard hotkey
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+
+        _weaponManager.SwitchWeapon(2);
+    }
+
+    public void AimWeapon(InputAction.CallbackContext context)
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
+    }
+
+
+    public void RMB(InputAction.CallbackContext context)
+    {
+        if (!_playerTurn.IsPlayerTurn()) { return; }
     }
 }

@@ -6,7 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private GameObject _characterProfileGUI;
     private float _currentHealth;
-    private float _maxHealth = 100;
+    private float _maxHealth = 100f;
     private float _healthBarConversion;
 
     public delegate void DelegateTakeDamage(float health);
@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         _currentHealth -= damage;
         _healthBarConversion = _currentHealth / _maxHealth;        
@@ -29,6 +29,7 @@ public class PlayerHealth : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Debug.Log(gameObject.name + " has died");
+            TurnManager.GetInstance().CharacterDied(this.gameObject);
         }
     }
 

@@ -5,5 +5,6 @@ using UnityEngine;
 public enum EnumWeapon
 {
     Bazooka,
-    Gun
+    Gun,
+    RayGun
 }

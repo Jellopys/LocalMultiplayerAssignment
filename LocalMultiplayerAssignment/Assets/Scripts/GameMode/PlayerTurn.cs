@@ -15,6 +15,7 @@ public class PlayerTurn : MonoBehaviour
     
     public bool IsPlayerTurn()
     {
+        if (this == null) {return false;}
         return TurnManager.GetInstance().IsItPlayerTurn(this.gameObject);
     }
 
