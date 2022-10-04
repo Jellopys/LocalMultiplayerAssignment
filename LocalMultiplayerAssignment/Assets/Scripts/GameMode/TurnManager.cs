@@ -80,6 +80,8 @@ public class TurnManager : MonoBehaviour
             _currentCharacter = _livingCharacters[_currentCharacterIndex];
         }
 
+        _currentCharacter.GetComponent<WeaponManager>().Reload();
+
         if (ChangeCameraTarget != null)
             ChangeCameraTarget();
     }

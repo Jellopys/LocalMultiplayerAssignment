@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager instance;
-    private bool isChargingWeapon;
+    [SerializeField] GameObject _characterProfileGUI;
+    [SerializeField] GameObject _weaponUIPrefab;
     [SerializeField] Image progressBar;
     [SerializeField] Image progress;
+    private static UIManager instance;
+    private bool isChargingWeapon;
     private bool _reverse;
 
-    [SerializeField] RectTransform _profileContainer;
+    [SerializeField] private RectTransform _profileContainer;
     
     private void Awake()
     {
@@ -68,5 +70,14 @@ public class UIManager : MonoBehaviour
     public RectTransform GetProfileContainer()
     {
         return _profileContainer;
+    }
+
+    public void InitPlayerProfiles(GameObject character, int i)
+    {
+        Vector3 spawnLocation = new Vector3(_profileContainer.localPosition.x, _profileContainer.localPosition.y, _profileContainer.localPosition.z);
+        GameObject playerProfile = Instantiate(_characterProfileGUI, spawnLocation, Quaternion.identity);
+        playerProfile.GetComponent<RectTransform>().SetParent(_profileContainer);
+        playerProfile.GetComponent<CharacterProfileGUI>().Initialize(i, character.GetComponent<PlayerHealth>());
+        character.GetComponent<WeaponManager>().SetWeaponsUI(playerProfile.transform, _weaponUIPrefab);
     }
 }

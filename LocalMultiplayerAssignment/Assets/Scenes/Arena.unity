@@ -2730,6 +2730,7 @@ MonoBehaviour:
   - {fileID: 1687516712}
   - {fileID: 928816466}
   - {fileID: 1702035366}
+  _characterProfileGUI: {fileID: 8189904789799379706, guid: f5896a2426869b24e93478ecf4d2b8fe, type: 3}
   timeRemaining: 2
   timerIsRunning: 0
 --- !u!114 &126415125
@@ -2744,6 +2745,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2a90fdb395ddd48a0833b882d19d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterProfileGUI: {fileID: 8189904789799379706, guid: f5896a2426869b24e93478ecf4d2b8fe, type: 3}
+  _weaponUIPrefab: {fileID: 5391089497904224643, guid: 8b0595c757edc87428edc5833c0d0f33, type: 3}
   progressBar: {fileID: 29336582}
   progress: {fileID: 1712120371}
   _profileContainer: {fileID: 1887594304}
@@ -3778,7 +3781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &203956743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16726,7 +16729,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -22634,7 +22637,7 @@ Transform:
   m_GameObject: {fileID: 1078189558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.92, y: 1.4, z: 2.0505877}
-  m_LocalScale: {x: 5.1245, y: 1.8904, z: 11.237}
+  m_LocalScale: {x: 5.1245, y: 5.553617, z: 11.237}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

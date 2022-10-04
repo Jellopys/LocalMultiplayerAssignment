@@ -28,7 +28,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (weapon == EnumWeapon.Bazooka)
         {
-            if (_availableWeapons.Contains(_bazooka)) { return; } // ADD AMMO HERE
+            if (_availableWeapons.Contains(_bazooka)) { return; } // ADD AMMO IN BRACKETS
 
             _availableWeapons.Add(_bazooka); // ADD WEAPON
         }
@@ -43,6 +43,22 @@ public class WeaponManager : MonoBehaviour
             if (_availableWeapons.Contains(_rayGun)) { return; }
 
             _availableWeapons.Add(_rayGun); // ADD WEAPON
+        }
+    }
+
+    public void SetWeaponsUI(Transform playerProfileGUI, GameObject weaponUIPrefab)
+    {
+        foreach (IWeapon weapon in _availableWeapons)
+        {
+            weapon.SetupWeaponUI(playerProfileGUI, weaponUIPrefab);
+        }
+    }
+
+    public void Reload()
+    {
+        foreach (IWeapon weapon in _availableWeapons)
+        {
+            weapon.Reload();
         }
     }
 

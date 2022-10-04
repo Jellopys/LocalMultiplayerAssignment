@@ -41,6 +41,6 @@ public class PlayerHealth : MonoBehaviour
 
         GameObject playerProfile = Instantiate(_characterProfileGUI, spawnLocation, Quaternion.identity);
         playerProfile.GetComponent<RectTransform>().SetParent(profileContainer);
-        playerProfile.GetComponent<CharacterProfileGUI>().Initialize(playerIndex, this);
+        // playerProfile.GetComponent<CharacterProfileGUI>().Initialize(playerIndex, this);
     }
 }

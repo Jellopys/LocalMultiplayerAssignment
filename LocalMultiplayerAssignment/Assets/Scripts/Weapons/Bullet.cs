@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     private float _damage = 0f;
     private float _lifetime = 3f;
 
-    public void SetProjectilePower(Vector3 power, int damage)
+    public void SetProjectilePower(Vector3 power, float damage)
     {
         _damage = damage;
         _rigidbody.AddForce(power);

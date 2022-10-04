@@ -727,6 +727,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 5771868060964801821, guid: 0d89ef28b95f1bf4a9b2f5ebc075c139, type: 3}
   _spawnPoint: {fileID: 1443114465}
+  _maxAmmunition: 1
+  _weaponIcon: {fileID: 21300000, guid: b737d0be232a1334ebe726f197a984e6, type: 3}
 --- !u!114 &2340010486035334272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,6 +743,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5771868060964801821, guid: 8edbcaaee967b7d469273e6133a41e1d, type: 3}
   _spawnPoint: {fileID: 8083186639632662369}
+  _maxAmmunition: 5
+  _weaponIcon: {fileID: 21300000, guid: 3a9e2364b1d8c484092ae042e4600a18, type: 3}
 --- !u!114 &9163472742095459546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -768,6 +772,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 511915077161095610}
   _rayLine: {fileID: 3815607168381132169}
+  _maxAmmunition: 1
+  _weaponIcon: {fileID: 21300000, guid: b0a12dcb571d16e4caa453bcb55724af, type: 3}
 --- !u!1 &6630606045902503149
 GameObject:
   m_ObjectHideFlags: 0
