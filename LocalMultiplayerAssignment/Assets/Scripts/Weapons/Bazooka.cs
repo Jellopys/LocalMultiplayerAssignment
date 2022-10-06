@@ -7,19 +7,19 @@ public class Bazooka : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private int _maxAmmunition = 1;
+    private Vector3 _trajectory;
+    private float _bazookaPower;
+    private float _bazookaMaxPower = 800f;
+    private bool _isChargingBazooka;
+    private bool _reverse;
+    private int _damage = 20;
+
+    // AMMO + UI
     [SerializeField] private Sprite _weaponIcon;
     private Vector3 _GUILocation = new Vector3 (-130, 300, 0);
-    private GameObject _instigator;
-    private bool currentlyHolding = false;
-    private Vector3 _trajectory;
-    private float bazookaPower;
-    private float bazookaMaxPower = 800f;
-    private bool isChargingBazooka;
-    private bool reverse;
-    private int damage = 20;
-    private int _currentAmmunition;
     private WeaponGUIInfo _weaponGUI;
+    private int _maxAmmunition = 2;
+    private int _currentAmmunition;
 
     void Awake()
     {
@@ -51,44 +51,41 @@ public class Bazooka : MonoBehaviour, IWeapon
     {
         if (_currentAmmunition <= 0) { return; } // NO AMMO
         
-        currentlyHolding = isHolding;
         UIManager.GetInstance().SetIsHolding(isHolding);
-        _trajectory = _spawnPoint.transform.forward * bazookaPower + _spawnPoint.transform.up * 300;
-        
-        isChargingBazooka = isHolding;
+        _trajectory = _spawnPoint.transform.forward * _bazookaPower + _spawnPoint.transform.up * 300;
+        _isChargingBazooka = isHolding;
+
         if (isHolding)
         {
-            bazookaPower = 0;
+            _bazookaPower = 0;
         }
         else if (!isHolding)
         {
             _currentAmmunition -= 1;
             UpdateAmmoText();
-
             GameObject projectile = Instantiate(_projectile, _spawnPoint.transform.position, _spawnPoint.transform.rotation);
-            projectile.GetComponent<Bullet>().SetProjectilePower(_trajectory, damage);
+            projectile.GetComponent<Bullet>().SetProjectilePower(_trajectory, _damage);
         }
     }
 
     void Update()
     {
-        if (isChargingBazooka)
+        if (_isChargingBazooka)
         {
-            
-            if (reverse == false && bazookaPower <= bazookaMaxPower)
+            if (_reverse == false && _bazookaPower <= _bazookaMaxPower)
             {
-                bazookaPower = bazookaPower + bazookaMaxPower * Time.deltaTime;
+                _bazookaPower = _bazookaPower + _bazookaMaxPower * Time.deltaTime;
 
-                if (bazookaPower >= bazookaMaxPower)
-                    reverse = true;
+                if (_bazookaPower >= _bazookaMaxPower)
+                    _reverse = true;
 
             }
-            else if (reverse == true && bazookaPower >= 0)
+            else if (_reverse == true && _bazookaPower >= 0)
             {
-                bazookaPower = bazookaPower - bazookaMaxPower * Time.deltaTime;
+                _bazookaPower = _bazookaPower - _bazookaMaxPower * Time.deltaTime;
 
-                if (bazookaPower <= 0)
-                    reverse = false;
+                if (_bazookaPower <= 0)
+                    _reverse = false;
             }
         }
     }

@@ -10,7 +10,6 @@ public class CharacterProfileGUI : MonoBehaviour
     [SerializeField] private Image _healthBar;
     [SerializeField] private Image _avatar;
     [SerializeField] private Sprite[] _playerAvatars;
-    private List<IWeapon> _weaponList;
     private int _defaultPosition = 384;
 
     private PlayerHealth _playerHealth; 

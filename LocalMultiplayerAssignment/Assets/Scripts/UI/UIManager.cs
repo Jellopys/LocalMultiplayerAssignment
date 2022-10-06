@@ -1,55 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject _characterProfileGUI;
-    [SerializeField] GameObject _weaponUIPrefab;
-    [SerializeField] Image progressBar;
-    [SerializeField] Image progress;
-    private static UIManager instance;
-    private bool isChargingWeapon;
+    [SerializeField] private GameObject _characterProfileGUI;
+    [SerializeField] private GameObject _weaponUIPrefab;
+    [SerializeField] private Image _progressBar;
+    [SerializeField] private Image _progress;
+    private static UIManager _instance;
+    private bool _isChargingWeapon;
     private bool _reverse;
 
     [SerializeField] private RectTransform _profileContainer;
     
+    public static UIManager GetInstance() { return _instance; }
+
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else 
-        {
-            instance = this;
-        }
-    }
-
-    public static UIManager GetInstance()
-    {
-        return instance;
+        if (_instance != null && _instance != this) { Destroy(this); }
+        else { _instance = this; }
     }
 
     void Update()
     {
-        if (isChargingWeapon)
+        if (_isChargingWeapon)
         {
-            
-            if (_reverse == false && progress.fillAmount <= 1)
+            if (_reverse == false && _progress.fillAmount <= 1)
             {
-                progress.fillAmount = progress.fillAmount + 1f * Time.deltaTime;
+                _progress.fillAmount = _progress.fillAmount + 1f * Time.deltaTime;
 
-                if (progress.fillAmount >= 1)
+                if (_progress.fillAmount >= 1)
                     _reverse = true;
 
             }
-            else if (_reverse == true && progress.fillAmount >= 0)
+            else if (_reverse == true && _progress.fillAmount >= 0)
             {
-                progress.fillAmount = progress.fillAmount - 1f * Time.deltaTime;
+                _progress.fillAmount = _progress.fillAmount - 1f * Time.deltaTime;
 
-                if (progress.fillAmount <= 0)
+                if (_progress.fillAmount <= 0)
                     _reverse = false;
             }
         }
@@ -57,13 +45,13 @@ public class UIManager : MonoBehaviour
 
     public void SetIsHolding(bool isCharging)
     {
-        isChargingWeapon = isCharging;
-        progressBar.enabled = isCharging;
-        progress.enabled = isCharging;
+        _isChargingWeapon = isCharging;
+        _progressBar.enabled = isCharging;
+        _progress.enabled = isCharging;
         _reverse = false;
         if (!isCharging)
         {
-            progress.fillAmount = 0;
+            _progress.fillAmount = 0;
         }
     }
 

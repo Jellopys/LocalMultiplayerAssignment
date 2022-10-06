@@ -4,58 +4,55 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    private static TurnManager instance;
     [SerializeField] private List<GameObject> _livingCharacters;
     [SerializeField] private GameObject _currentCharacter;
     [SerializeField] private int _currentCharacterIndex = 0;
     [SerializeField] private float timeBetweenTurns;
-    
-    private int currentPositionIndex;
-    private int currentTeamIndex;
-    private bool waitingForSwitch;
-    private float turnDelay;
+    private static TurnManager _instance;    
+    private int _currentPositionIndex;
+    private int _currentTeamIndex;
+    private bool _waitingForSwitch;
+    private float _turnDelay;
 
     public delegate void DelegateChangeTurn();
     public static event DelegateChangeTurn ChangeCameraTarget;
 
-    
     public static TurnManager GetInstance()
     {
-        return instance;
+        return _instance;
     }
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(this);
         }
         else 
         {
-            instance = this;
+            _instance = this;
         }
     }
 
     private void Update()
     {
-        if (waitingForSwitch)
+        if (_waitingForSwitch)
         {
-            turnDelay += Time.deltaTime;
-            if (turnDelay >= timeBetweenTurns)
+            _turnDelay += Time.deltaTime;
+            if (_turnDelay >= timeBetweenTurns)
             {
-                turnDelay = 0;
-                waitingForSwitch = false;
+                _turnDelay = 0;
+                _waitingForSwitch = false;
                 ChangeTurn();
             }
         }
     }
 
-
     public bool IsItPlayerTurn(GameObject character)
     {
         if (character == null) { return false; }
 
-        if (!waitingForSwitch)
+        if (!_waitingForSwitch)
             return character == _currentCharacter;
         else
             return false;
@@ -63,7 +60,7 @@ public class TurnManager : MonoBehaviour
 
     public void TriggerChangeTurn()
     {
-        waitingForSwitch = true;
+        _waitingForSwitch = true;
     }
 
     private void ChangeTurn()

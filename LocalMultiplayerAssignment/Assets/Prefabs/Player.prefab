@@ -575,6 +575,7 @@ GameObject:
   - component: {fileID: 2340010486035334272}
   - component: {fileID: 9163472742095459546}
   - component: {fileID: 1482498455814062017}
+  - component: {fileID: 9194629275757074530}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -629,8 +630,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f40372e980a8244b8ceddcdd15a044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamIndex: 0
-  positionIndex: 0
+  _teamIndex: 0
+  _positionIndex: 0
+  _bodyMaterial: {fileID: 0}
+  _gogglesMaterial: {fileID: 0}
 --- !u!114 &4818889775260371708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +730,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 5771868060964801821, guid: 0d89ef28b95f1bf4a9b2f5ebc075c139, type: 3}
   _spawnPoint: {fileID: 1443114465}
-  _maxAmmunition: 1
   _weaponIcon: {fileID: 21300000, guid: b737d0be232a1334ebe726f197a984e6, type: 3}
 --- !u!114 &2340010486035334272
 MonoBehaviour:
@@ -743,7 +745,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5771868060964801821, guid: 8edbcaaee967b7d469273e6133a41e1d, type: 3}
   _spawnPoint: {fileID: 8083186639632662369}
-  _maxAmmunition: 5
   _weaponIcon: {fileID: 21300000, guid: 3a9e2364b1d8c484092ae042e4600a18, type: 3}
 --- !u!114 &9163472742095459546
 MonoBehaviour:
@@ -774,6 +775,20 @@ MonoBehaviour:
   _rayLine: {fileID: 3815607168381132169}
   _maxAmmunition: 1
   _weaponIcon: {fileID: 21300000, guid: b0a12dcb571d16e4caa453bcb55724af, type: 3}
+--- !u!114 &9194629275757074530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6630606045894814716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa486d2da6d4c74f9c152e3c66b5406, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _body: {fileID: 6630606044505918678}
+  _goggles: {fileID: 6630606045902503138}
 --- !u!1 &6630606045902503149
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,7 +802,7 @@ GameObject:
   - component: {fileID: 6630606045902503138}
   - component: {fileID: 6630606045902503139}
   m_Layer: 6
-  m_Name: Cube
+  m_Name: Goggles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

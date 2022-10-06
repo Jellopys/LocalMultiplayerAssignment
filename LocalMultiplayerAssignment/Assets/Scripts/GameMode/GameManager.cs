@@ -1,21 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int _totalCharacters = 4;
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private List<Transform> _spawnPoints;
-    // [SerializeField] private GameObject _characterProfileGUI;
+    [SerializeField] private Material[] _bodyMaterials;
+    [SerializeField] private Material[] _goggleMaterials;
 
-    public float timeRemaining = 2;
-    public bool timerIsRunning = false;
+    // public float timeRemaining = 2;
+    // public bool timerIsRunning = false;
 
     private void Start()
     {
         Initialize();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void Initialize()
@@ -24,23 +25,15 @@ public class GameManager : MonoBehaviour
         {
             GameObject character = Instantiate(_characterPrefab, GetRandomAvailableSpawnPoint(), Quaternion.identity);
             TurnManager.GetInstance().SetPlayerTeam(character);
+            character.GetComponent<SetPlayerMaterial>().SetMaterial(_bodyMaterials[i], _goggleMaterials[i]);
             UIManager.GetInstance().InitPlayerProfiles(character, i);
-
-            // // INIT Player Profile UI
-            // RectTransform profileContainer = UIManager.GetInstance().GetProfileContainer();
-            // UIManager.GetInstance().InitPlayerProfiles(character);
-            // Vector3 spawnLocation = new Vector3(profileContainer.localPosition.x, profileContainer.localPosition.y, profileContainer.localPosition.z);
-            // GameObject playerProfile = Instantiate(_characterProfileGUI, spawnLocation, Quaternion.identity);
-            // playerProfile.GetComponent<RectTransform>().SetParent(profileContainer);
-            // playerProfile.GetComponent<CharacterProfileGUI>().Initialize(i, character.GetComponent<PlayerHealth>());
         }
     }
 
-    public Vector3 GetRandomAvailableSpawnPoint()
+    public Vector3 GetRandomAvailableSpawnPoint() // Spawning Players
     {
         Vector3 spawnPoint;
         int listPosition;
-
         listPosition = (Random.Range(0, _spawnPoints.Count - 1));
         spawnPoint = _spawnPoints[listPosition].position;
         _spawnPoints.RemoveAt(listPosition);

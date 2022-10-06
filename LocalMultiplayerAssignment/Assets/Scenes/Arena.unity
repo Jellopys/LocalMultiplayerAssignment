@@ -2730,9 +2730,16 @@ MonoBehaviour:
   - {fileID: 1687516712}
   - {fileID: 928816466}
   - {fileID: 1702035366}
-  _characterProfileGUI: {fileID: 8189904789799379706, guid: f5896a2426869b24e93478ecf4d2b8fe, type: 3}
-  timeRemaining: 2
-  timerIsRunning: 0
+  _bodyMaterials:
+  - {fileID: -8067726398312463513, guid: 2e71e399ab2418b45ac24122966ea0ec, type: 3}
+  - {fileID: 6407905733916077036, guid: d76a1b471b973f147bd69c3aaa437fbb, type: 3}
+  - {fileID: 7770318624900243041, guid: 9f3f0ea8c6ddb3c4b832d0c176cdbe0f, type: 3}
+  - {fileID: -8863482124825134610, guid: ef95b7ee2c355eb4ea1921e5be7bb1bb, type: 3}
+  _goggleMaterials:
+  - {fileID: -9117483709511198939, guid: d101fcea7f0569a48bb12ffcf8035751, type: 3}
+  - {fileID: -8863482124825134610, guid: ef95b7ee2c355eb4ea1921e5be7bb1bb, type: 3}
+  - {fileID: 6407905733916077036, guid: d76a1b471b973f147bd69c3aaa437fbb, type: 3}
+  - {fileID: 2100000, guid: f2c23294678c47341aa7ffec8a34162a, type: 2}
 --- !u!114 &126415125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2747,8 +2754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterProfileGUI: {fileID: 8189904789799379706, guid: f5896a2426869b24e93478ecf4d2b8fe, type: 3}
   _weaponUIPrefab: {fileID: 5391089497904224643, guid: 8b0595c757edc87428edc5833c0d0f33, type: 3}
-  progressBar: {fileID: 29336582}
-  progress: {fileID: 1712120371}
+  _progressBar: {fileID: 29336582}
+  _progress: {fileID: 1712120371}
   _profileContainer: {fileID: 1887594304}
 --- !u!1001 &126905158
 PrefabInstance:
@@ -7331,7 +7338,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 150
+    m_MaxSpeed: 125
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X

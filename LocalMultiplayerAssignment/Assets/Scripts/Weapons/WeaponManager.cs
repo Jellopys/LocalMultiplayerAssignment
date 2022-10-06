@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _bazookaModel;
+    [SerializeField] private GameObject _pistolModel;
+    [SerializeField] private GameObject _rayGunModel;
     private List<IWeapon> _availableWeapons = new List<IWeapon>();
     private int _activeWeaponSlot = 0;
     private Bazooka _bazooka;
     private Gun _gun;
     private RayGun _rayGun;
-    [SerializeField] GameObject _bazookaModel;
-    [SerializeField] GameObject _pistolModel;
-    [SerializeField] GameObject _rayGunModel;
 
 
     void Awake()

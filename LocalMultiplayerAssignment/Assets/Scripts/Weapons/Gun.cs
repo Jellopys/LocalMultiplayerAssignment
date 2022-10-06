@@ -7,14 +7,16 @@ public class Gun : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private int _maxAmmunition = 5;
     [SerializeField] private Sprite _weaponIcon;
     private Vector3 _GUILocation = new Vector3 (-40, 300, 0);
-    private bool currentlyHolding = false;
-    private Vector3 power;
+    private Vector3 _power;
     private float _damage = 2f;
-    private int _currentAmmunition;
+    private bool _currentlyHolding = false;
+
+    //AMMO
     private WeaponGUIInfo _weaponGUI;
+    private int _maxAmmunition = 10;
+    private int _currentAmmunition;
 
     void Awake()
     {
@@ -46,8 +48,7 @@ public class Gun : MonoBehaviour, IWeapon
     {
         if (_currentAmmunition <= 0) { return; } // NO AMMO
 
-        currentlyHolding = isHolding;
-        UIManager.GetInstance().SetIsHolding(isHolding);
+        _currentlyHolding = isHolding;
 
         if (isHolding)
         {
@@ -57,20 +58,21 @@ public class Gun : MonoBehaviour, IWeapon
 
     IEnumerator ShootBullets()
     {
-        while (currentlyHolding)
+        while (_currentlyHolding)
         {
-            if (_currentAmmunition <= 0) { yield return null; }
+            if (_currentAmmunition <= 0) 
+            {
+                yield break;
+            }
 
             _currentAmmunition -= 1;
             UpdateAmmoText();
 
-            power = _spawnPoint.transform.forward * 700f;
+            _power = _spawnPoint.transform.forward * 700f;
             GameObject projectile = Instantiate(_bullet, _spawnPoint.transform.position, Quaternion.identity);
-            projectile.GetComponent<Bullet>().SetProjectilePower(power, _damage);
-
+            projectile.GetComponent<Bullet>().SetProjectilePower(_power, _damage);
             yield return new WaitForSeconds(0.1f);
         }
-
         yield return null;
     }
 }

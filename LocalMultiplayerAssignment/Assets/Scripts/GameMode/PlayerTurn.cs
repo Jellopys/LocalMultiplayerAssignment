@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class PlayerTurn : MonoBehaviour
 {
-    [SerializeField] private int teamIndex;
-    [SerializeField] private int positionIndex;
-
-    public void SetPlayerTurn(int team, int position)
-    {
-        teamIndex = team;
-        positionIndex = position;
-    }
+    private int _teamIndex;
+    private int _positionIndex;
     
     public bool IsPlayerTurn()
     {
@@ -21,6 +15,6 @@ public class PlayerTurn : MonoBehaviour
 
     public int GetPlayerIndex()
     {
-        return teamIndex;
+        return _teamIndex;
     }
 }
