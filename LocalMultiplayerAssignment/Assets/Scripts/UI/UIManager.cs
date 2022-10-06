@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviour // SINGLETON
 {
+    [SerializeField] private RectTransform _profileContainer;
     [SerializeField] private GameObject _characterProfileGUI;
     [SerializeField] private GameObject _weaponUIPrefab;
     [SerializeField] private Image _progressBar;
@@ -10,8 +12,6 @@ public class UIManager : MonoBehaviour
     private static UIManager _instance;
     private bool _isChargingWeapon;
     private bool _reverse;
-
-    [SerializeField] private RectTransform _profileContainer;
     
     public static UIManager GetInstance() { return _instance; }
 
@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
         _progressBar.enabled = isCharging;
         _progress.enabled = isCharging;
         _reverse = false;
+
         if (!isCharging)
         {
             _progress.fillAmount = 0;

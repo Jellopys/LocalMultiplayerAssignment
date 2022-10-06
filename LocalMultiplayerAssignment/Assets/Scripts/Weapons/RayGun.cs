@@ -11,10 +11,7 @@ public class RayGun : MonoBehaviour, IWeapon
     [SerializeField] private int _maxAmmunition = 1;
     [SerializeField] private Sprite _weaponIcon;
     private Vector3 _GUILocation = new Vector3 (50, 300, 0);
-    private EnumWeapon enumWeapon = EnumWeapon.RayGun;
     private GameObject _instigator;
-    private bool _currentlyHolding = false;
-    private Vector3 _trajectory;
     private float _rayPower;
     private bool _isCharging;
     private bool _reverse;
@@ -100,7 +97,7 @@ public class RayGun : MonoBehaviour, IWeapon
     {
         if (!_isCharging) { return; }
 
-        if (_reverse == false && _rayPower <= _rayMaxRange) // Increase range of ray & damage
+        if (_reverse == false && _rayPower <= _rayMaxRange) // Increase range & damage of ray
         {
             _rayPower = _rayPower + _rayMaxRange * Time.deltaTime;
             _damage = _damage + _maxDamage * Time.deltaTime;
@@ -109,7 +106,7 @@ public class RayGun : MonoBehaviour, IWeapon
                 _reverse = true;
 
         }
-        else if (_reverse == true && _rayPower >= 0) // Decrease range of ray & damage
+        else if (_reverse == true && _rayPower >= 0) // Decrease range & damage of ray
         {
             _rayPower = _rayPower - _rayMaxRange * Time.deltaTime;
             _damage = _damage - _maxDamage * Time.deltaTime;

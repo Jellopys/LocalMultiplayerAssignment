@@ -51,7 +51,7 @@ public class InputController : MonoBehaviour
 
         _switchAction = _inputsActions.Player.SwitchCharacter;
         _switchAction.Enable();
-        _switchAction.performed += SwitchCharacter;
+        // _switchAction.performed += SwitchCharacter;
 
         _Weapon1Action = _inputsActions.Player.Weapon1;
         _Weapon1Action.Enable();
@@ -64,11 +64,6 @@ public class InputController : MonoBehaviour
         _Weapon3Action = _inputsActions.Player.Weapon3;
         _Weapon3Action.Enable();
         _Weapon3Action.performed += SwitchToWeapon3;
-
-        _RMBAction = _inputsActions.Player.RMB;
-        _RMBAction.Enable();
-        _RMBAction.performed += AimWeapon;
-        _RMBAction.canceled += AimWeapon;
     }
 
     private void OnDisable() // Disables all inputActions
@@ -79,15 +74,13 @@ public class InputController : MonoBehaviour
         _Weapon1Action.Disable();
         _Weapon2Action.Disable();
         _Weapon3Action.Disable();
-        _RMBAction.Disable();
     }
 
     void Update()
     {
-        if (_playerTurn.IsPlayerTurn())
-        {
-            _playerMovement.MoveCharacter(_moveAction.ReadValue<Vector2>());
-        }
+        if (!_playerTurn.IsPlayerTurn()) {return;}
+        
+        _playerMovement.MoveCharacter(_moveAction.ReadValue<Vector2>());
     }
 
     public void Jump(InputAction.CallbackContext context) // Space hotkey
@@ -111,12 +104,12 @@ public class InputController : MonoBehaviour
         }
     }
 
-    public void SwitchCharacter(InputAction.CallbackContext context) // V hotkey
-    {
-        if (!_playerTurn.IsPlayerTurn()) { return; }
+    // public void SwitchCharacter(InputAction.CallbackContext context) // V hotkey
+    // {
+    //     if (!_playerTurn.IsPlayerTurn()) { return; }
 
-        TurnManager.GetInstance().TriggerChangeTurn();
-    }
+    //     TurnManager.GetInstance().ChangeTurn();
+    // }
 
     public void SwitchToWeapon1(InputAction.CallbackContext context) // 1 Keyboard hotkey
     {
@@ -137,16 +130,5 @@ public class InputController : MonoBehaviour
         if (!_playerTurn.IsPlayerTurn()) { return; }
 
         _weaponManager.SwitchWeapon(2);
-    }
-
-    public void AimWeapon(InputAction.CallbackContext context)
-    {
-        if (!_playerTurn.IsPlayerTurn()) { return; }
-    }
-
-
-    public void RMB(InputAction.CallbackContext context)
-    {
-        if (!_playerTurn.IsPlayerTurn()) { return; }
     }
 }

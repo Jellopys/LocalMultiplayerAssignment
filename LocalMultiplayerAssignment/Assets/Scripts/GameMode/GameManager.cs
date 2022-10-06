@@ -9,17 +9,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Material[] _bodyMaterials;
     [SerializeField] private Material[] _goggleMaterials;
 
-    // public float timeRemaining = 2;
-    // public bool timerIsRunning = false;
-
     private void Start()
     {
-        Initialize();
+        InitializePlayers();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    public void Initialize()
+    public void InitializePlayers()
     {
         for (int i = 0; i < _totalCharacters; i++)
         {

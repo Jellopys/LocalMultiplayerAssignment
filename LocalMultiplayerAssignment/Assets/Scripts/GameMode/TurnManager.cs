@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : MonoBehaviour // SINGLETON
 {
-    [SerializeField] private List<GameObject> _livingCharacters;
-    [SerializeField] private GameObject _currentCharacter;
-    [SerializeField] private int _currentCharacterIndex = 0;
-    [SerializeField] private float timeBetweenTurns;
-    private static TurnManager _instance;    
+    private List<GameObject> _livingCharacters = new List<GameObject>();
+    private GameObject _currentCharacter;
+    private static TurnManager _instance;
+    private int _currentCharacterIndex = 0;
+    private float timeBetweenTurns = 1f;
     private int _currentPositionIndex;
     private int _currentTeamIndex;
     private bool _waitingForSwitch;
     private float _turnDelay;
+
+    // ROUND TIMER
+    [SerializeField] private TextMeshProUGUI _timerText;
+    private float _roundTime = 10f;
+    private float _currentRoundTime;
+    private int _roundTimeInt;
+    private bool _timerIsRunning;
 
     public delegate void DelegateChangeTurn();
     public static event DelegateChangeTurn ChangeCameraTarget;
@@ -36,16 +44,11 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
-        if (_waitingForSwitch)
-        {
-            _turnDelay += Time.deltaTime;
-            if (_turnDelay >= timeBetweenTurns)
-            {
-                _turnDelay = 0;
-                _waitingForSwitch = false;
-                ChangeTurn();
-            }
-        }
+        if (_currentRoundTime <= 0f) {ChangeTurn();}
+
+        _currentRoundTime -= 1f * Time.deltaTime;
+        _roundTimeInt = (int)_currentRoundTime;
+        _timerText.text = _roundTimeInt.ToString();
     }
 
     public bool IsItPlayerTurn(GameObject character)
@@ -58,13 +61,25 @@ public class TurnManager : MonoBehaviour
             return false;
     }
 
-    public void TriggerChangeTurn()
-    {
-        _waitingForSwitch = true;
-    }
+    // IEnumerator StartRoundTimer()
+    // {
+    //     if (_timerIsRunning) {yield break;}
+    //     Debug.Log("Start Timer");
+    //     _currentRoundTime = _roundTime;
+    //     _timerIsRunning = true;
+    //     yield return new WaitForSeconds(_roundTime);
+    //     ChangeTurn();
+    //     _timerIsRunning = false;
+    // }
 
-    private void ChangeTurn()
+    // public void TriggerChangeTurn()
+    // {
+    //     _waitingForSwitch = true;
+    // }
+
+    public void ChangeTurn()
     {
+        _currentRoundTime = _roundTime;
         _currentCharacterIndex++;
 
         if (_currentCharacterIndex >= _livingCharacters.Count)
@@ -92,6 +107,7 @@ public class TurnManager : MonoBehaviour
     {
         _livingCharacters.Add(character);
         _currentCharacter = _livingCharacters[0];
+        _currentRoundTime = _roundTime;
 
         if (ChangeCameraTarget != null)
             ChangeCameraTarget();
