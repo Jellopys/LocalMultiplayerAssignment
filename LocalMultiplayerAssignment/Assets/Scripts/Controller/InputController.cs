@@ -51,7 +51,6 @@ public class InputController : MonoBehaviour
 
         _switchAction = _inputsActions.Player.SwitchCharacter;
         _switchAction.Enable();
-        // _switchAction.performed += SwitchCharacter;
 
         _Weapon1Action = _inputsActions.Player.Weapon1;
         _Weapon1Action.Enable();
@@ -103,13 +102,6 @@ public class InputController : MonoBehaviour
             _weaponManager.Shoot(false);
         }
     }
-
-    // public void SwitchCharacter(InputAction.CallbackContext context) // V hotkey
-    // {
-    //     if (!_playerTurn.IsPlayerTurn()) { return; }
-
-    //     TurnManager.GetInstance().ChangeTurn();
-    // }
 
     public void SwitchToWeapon1(InputAction.CallbackContext context) // 1 Keyboard hotkey
     {

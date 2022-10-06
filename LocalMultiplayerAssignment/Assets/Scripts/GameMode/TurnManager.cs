@@ -9,7 +9,6 @@ public class TurnManager : MonoBehaviour // SINGLETON
     private GameObject _currentCharacter;
     private static TurnManager _instance;
     private int _currentCharacterIndex = 0;
-    private float timeBetweenTurns = 1f;
     private int _currentPositionIndex;
     private int _currentTeamIndex;
     private bool _waitingForSwitch;
@@ -17,7 +16,7 @@ public class TurnManager : MonoBehaviour // SINGLETON
 
     // ROUND TIMER
     [SerializeField] private TextMeshProUGUI _timerText;
-    private float _roundTime = 10f;
+    private float _roundTime = 15f;
     private float _currentRoundTime;
     private int _roundTimeInt;
     private bool _timerIsRunning;
@@ -61,24 +60,9 @@ public class TurnManager : MonoBehaviour // SINGLETON
             return false;
     }
 
-    // IEnumerator StartRoundTimer()
-    // {
-    //     if (_timerIsRunning) {yield break;}
-    //     Debug.Log("Start Timer");
-    //     _currentRoundTime = _roundTime;
-    //     _timerIsRunning = true;
-    //     yield return new WaitForSeconds(_roundTime);
-    //     ChangeTurn();
-    //     _timerIsRunning = false;
-    // }
-
-    // public void TriggerChangeTurn()
-    // {
-    //     _waitingForSwitch = true;
-    // }
-
     public void ChangeTurn()
     {
+        UIManager.GetInstance().SetIsHolding(false); // removes Charge bar if it's active
         _currentRoundTime = _roundTime;
         _currentCharacterIndex++;
 
