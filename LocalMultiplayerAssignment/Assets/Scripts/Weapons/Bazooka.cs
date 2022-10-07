@@ -16,8 +16,9 @@ public class Bazooka : MonoBehaviour, IWeapon
 
     // AMMO + UI
     [SerializeField] private Sprite _weaponIcon;
-    private Vector3 _GUILocation = new Vector3 (-130, 300, 0);
+    [SerializeField] private Sprite _keybindIcon;
     private WeaponGUIInfo _weaponGUI;
+    private Vector3 _GUILocation = new Vector3 (-130, 300, 0);
     private int _maxAmmunition = 2;
     private int _currentAmmunition;
 
@@ -33,7 +34,7 @@ public class Bazooka : MonoBehaviour, IWeapon
         _weaponGUI = weaponGUI.GetComponent<WeaponGUIInfo>();
         weaponGUI.GetComponent<RectTransform>().SetParent(playerProfileGUI);
         weaponGUI.GetComponent<RectTransform>().localPosition = _GUILocation;
-        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon);
+        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon, _keybindIcon);
     }
 
     public void Reload()

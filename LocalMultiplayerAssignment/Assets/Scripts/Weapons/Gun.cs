@@ -7,14 +7,15 @@ public class Gun : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private Sprite _weaponIcon;
-    private Vector3 _GUILocation = new Vector3 (-40, 300, 0);
     private Vector3 _power;
     private float _damage = 2f;
     private bool _currentlyHolding = false;
 
-    //AMMO
+    //AMMO + UI
+    [SerializeField] private Sprite _weaponIcon;
+    [SerializeField] private Sprite _keybindIcon;
     private WeaponGUIInfo _weaponGUI;
+    private Vector3 _GUILocation = new Vector3 (-40, 300, 0);
     private int _maxAmmunition = 10;
     private int _currentAmmunition;
 
@@ -30,7 +31,7 @@ public class Gun : MonoBehaviour, IWeapon
         _weaponGUI = weaponGUI.GetComponent<WeaponGUIInfo>();
         weaponGUI.GetComponent<RectTransform>().SetParent(playerProfileGUI);
         weaponGUI.GetComponent<RectTransform>().localPosition = _GUILocation;
-        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon);
+        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon, _keybindIcon);
     }
 
     public void Reload()

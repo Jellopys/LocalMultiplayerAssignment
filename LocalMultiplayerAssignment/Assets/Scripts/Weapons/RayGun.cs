@@ -8,9 +8,6 @@ public class RayGun : MonoBehaviour, IWeapon
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private LineRenderer _rayLine;
-    [SerializeField] private int _maxAmmunition = 1;
-    [SerializeField] private Sprite _weaponIcon;
-    private Vector3 _GUILocation = new Vector3 (50, 300, 0);
     private GameObject _instigator;
     private float _rayPower;
     private bool _isCharging;
@@ -19,8 +16,14 @@ public class RayGun : MonoBehaviour, IWeapon
     private float _maxDamage = 30f;
     private float _rayMaxRange = 20f;
     private float _rayDuration = 0.2f;
-    private int _currentAmmunition;
+
+    // AMMO + UI
+    [SerializeField] private Sprite _weaponIcon;
+    [SerializeField] private Sprite _keybindIcon;
     private WeaponGUIInfo _weaponGUI;
+    private Vector3 _GUILocation = new Vector3 (50, 300, 0);
+    private int _maxAmmunition = 1;
+    private int _currentAmmunition;
 
     void Awake()
     {
@@ -34,7 +37,7 @@ public class RayGun : MonoBehaviour, IWeapon
         _weaponGUI = weaponGUI.GetComponent<WeaponGUIInfo>();
         weaponGUI.GetComponent<RectTransform>().SetParent(playerProfileGUI);
         weaponGUI.GetComponent<RectTransform>().localPosition = _GUILocation;
-        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon);
+        weaponGUI.GetComponent<WeaponGUIInfo>().InitWeaponUI(_currentAmmunition, _weaponIcon, _keybindIcon);
     }
 
     public void Reload()
